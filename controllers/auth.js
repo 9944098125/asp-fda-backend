@@ -7,7 +7,7 @@ const register = async (req, res, next) => {
   const { userName, email, password, location, isRestaurantOwner } = req.body;
   try {
     if (!req.file) {
-      return res.status(403).json({ message: "Upload an Image !" });
+      return res.status(403).json({ message: "Please, Upload an Image !" });
     }
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
@@ -64,4 +64,13 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await Users.find();
+    res.status(200).json({ message: "Found Users", users: users });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, getUsers };

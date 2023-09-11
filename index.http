@@ -1,0 +1,18 @@
+############### $$ REGISTER $$
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+   "username":"Srinivas Akella",
+   "email":"srinivas@yopmail.com",
+   "password":"Srinivas@8",
+   "location": {
+                "city":"Kakinada",
+                "country":"India"
+   },
+   "isRestaurantOwner":true
+}
+###### since we can't upload a file from this file we did this in postman and it was successful.
+########## $$ GET USERS $$
+GET http://localhost:5000/api/auth
+Content-Type: application/json
