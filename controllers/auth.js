@@ -5,6 +5,7 @@ const { sendRegistrationEmail } = require("../helpers/nodemailer");
 
 const register = async (req, res, next) => {
   const { userName, email, password, location, isRestaurantOwner } = req.body;
+  console.log(req.body, req.file);
   try {
     if (!req.file) {
       return res.status(403).json({ message: "Please, Upload an Image !" });
@@ -27,7 +28,9 @@ const register = async (req, res, next) => {
     });
     await newUser.save();
     sendRegistrationEmail(newUser.email);
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({
+      message: `Congratulations ${userName}, you have registered successfully`,
+    });
   } catch (err) {
     next(err);
   }
