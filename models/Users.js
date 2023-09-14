@@ -28,6 +28,10 @@ const usersSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurants",
+    },
   },
   { timestamps: true },
 );
