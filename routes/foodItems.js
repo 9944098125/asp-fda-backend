@@ -25,3 +25,5 @@ router
 router
   .route("/deleteFoodItem/:foodItemId")
   .delete(verifyRestaurantOwner, deleteFoodItem);
+
+module.exports = router;
