@@ -26,11 +26,14 @@ const verifyRestaurantOwner = async (req, res, next) => {
       .json({ message: "Unauthorized ! No Token Provided" });
   }
   jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
+    // console.log(decoded);
     if (err) {
       return res.status(404).json({ message: "Invalid Token" });
     }
+
     if (decoded.isRestaurantOwner) {
       req.user = decoded;
+
       next();
     } else {
       return res.status(404).json({ message: "Not Authorized" });

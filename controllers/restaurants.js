@@ -2,11 +2,12 @@ const Restaurants = require("../models/Restaurants");
 const Users = require("../models/Users");
 
 const createRestaurant = async (req, res, next) => {
-  const { name, address, cuisine, rating } = req.body;
+  const { name, address, cuisine, rating, logo } = req.body;
   try {
     const existingRestaurant = await Restaurants.findOne({
       owner: req.user._id,
     });
+    console.log(req.user);
     if (existingRestaurant) {
       return res.status(404).json({
         message: "You Already own a Restaurant !",
@@ -17,6 +18,7 @@ const createRestaurant = async (req, res, next) => {
       address,
       cuisine,
       rating,
+      logo,
     });
     await newRestaurant.save();
     await Users.findByIdAndUpdate(req.user._id, {

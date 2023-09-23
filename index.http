@@ -16,3 +16,17 @@ Content-Type: application/json
 ########## $$ GET USERS $$
 GET http://localhost:5000/api/auth
 Content-Type: application/json
+
+########### $$ create Restaurant $$
+POST http://localhost:5000/api/restaurants//createRestaurant
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTAzZjdmNjFjNjIxMzM0N2U2ODZhOTkiLCJpc1Jlc3RhdXJhbnRPd25lciI6dHJ1ZSwiaWF0IjoxNjk1NDY3NTg4fQ.PkcFwjeDs3eEnDCp_KZwSarn_TqwI4FlDa-hM3U0gck
+
+{
+  "name":"Sree Ganesha Restaurant",
+  "address":"DNO.- 15, Maruti Nagar, Bengaluru - 560024",
+  "cuisine":"Tiffins",
+  "rating":"4.5/5",
+  "logo":"https://i.pinimg.com/736x/c9/94/82/c99482b20dff0923a5441e0daf0c0674.jpg",
+  "owner":"65015f5f7b71be0b59158823"
+}

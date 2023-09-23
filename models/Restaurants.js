@@ -19,6 +19,11 @@ const restaurantsSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    logo: {
+      data: Buffer,
+      type: String,
+      required: true,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",

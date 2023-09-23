@@ -25,8 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // use the api endpoints here
 app.use("/api/auth", authRoute);
-app.use("/api/foodItems", foodItemsRoute);
 app.use("/api/restaurants", restaurantsRoute);
+app.use("/api/foodItems", foodItemsRoute);
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500;
