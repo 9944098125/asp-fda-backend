@@ -39,11 +39,12 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const userExists = await Users.findOne({ email });
-    if (!userExists) {
+    console.log(email, password);
+    const existingUser = await Users.findOne({ email });
+    if (!existingUser) {
       return res.status(400).json({ message: "No User with this email..." });
     }
-    const passwordMatches = bcryptJs.compare(password, userExists.password);
+    const passwordMatches = bcryptJs.compare(password, existingUser.password);
     if (!passwordMatches) {
       return res.status(504).json({ message: "Wrong Password !" });
     }
@@ -52,10 +53,10 @@ const login = async (req, res, next) => {
     );
     const token = jwt.sign(
       {
-        userId: userExists._id,
-        isRestaurantOwner: userExists.isRestaurantOwner,
+        userId: existingUser._id,
+        isRestaurantOwner: existingUser.isRestaurantOwner,
       },
-      process.env.JWT_SECRET_KEY,
+      process.env.SECRET_TOKEN,
     );
     res.status(200).json({
       message: "Login Success",
