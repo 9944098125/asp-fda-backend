@@ -1,13 +1,17 @@
 const Restaurants = require("../models/Restaurants");
 const Users = require("../models/Users");
+const FoodItems = require("../models/FoodItems");
 
 const createRestaurant = async (req, res, next) => {
-  const { name, address, cuisine, rating, logo } = req.body;
+  const { name, address, cuisine, rating, owner } = req.body;
   try {
+    if (!(name || address || cuisine || rating || owner)) {
+      return res.status(400).json({ message: "All Fields are required" });
+    }
     const existingRestaurant = await Restaurants.findOne({
-      owner: req.user._id,
+      owner: owner,
     });
-    console.log(req.user);
+    console.log(owner);
     if (existingRestaurant) {
       return res.status(404).json({
         message: "You Already own a Restaurant !",
@@ -18,10 +22,11 @@ const createRestaurant = async (req, res, next) => {
       address,
       cuisine,
       rating,
-      logo,
+      logo: req.file.path,
+      owner,
     });
     await newRestaurant.save();
-    await Users.findByIdAndUpdate(req.user._id, {
+    await Users.findByIdAndUpdate(owner, {
       restaurantId: newRestaurant._id,
     });
     res.status(201).json({
@@ -61,7 +66,12 @@ const updateRestaurant = async (req, res, next) => {
   try {
     const updatedRestaurant = await Restaurants.findByIdAndUpdate(
       restaurantId,
-      { $set: req.body },
+      {
+        $set: {
+          ...req.body,
+          logo: req.file?.path,
+        },
+      },
       { new: true },
     );
     res.status(200).json({
@@ -78,6 +88,7 @@ const deleteRestaurant = async (req, res, next) => {
   try {
     const restaurant = await Restaurants.findOne({ _id: restaurantId });
     await Restaurants.findByIdAndDelete(restaurantId);
+    await FoodItems.deleteMany({ restaurantId }).exec();
     res
       .status(200)
       .json({ message: `Deleted the restaurant ${restaurant.name}` });

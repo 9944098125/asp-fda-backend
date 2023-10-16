@@ -7,7 +7,10 @@ const {
   updateRestaurant,
   deleteRestaurant,
 } = require("../controllers/restaurants");
-const { verifyRestaurantOwner } = require("../middleware/verify");
+const {
+  verifyRestaurantOwner,
+  verifyParticularRestaurantOwner,
+} = require("../middleware/verify");
 const upload = require("../multerConfig/multer");
 
 router
@@ -20,10 +23,14 @@ router.route("/").get(getAllRestaurants);
 
 router
   .route("/updateRestaurant/:restaurantId")
-  .patch(verifyRestaurantOwner, updateRestaurant);
+  .patch(
+    verifyParticularRestaurantOwner,
+    upload.single("logo"),
+    updateRestaurant,
+  );
 
 router
   .route("/deleteRestaurant/:restaurantId")
-  .delete(verifyRestaurantOwner, deleteRestaurant);
+  .delete(verifyParticularRestaurantOwner, deleteRestaurant);
 
 module.exports = router;

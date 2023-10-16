@@ -2,13 +2,13 @@ const FoodItems = require("../models/FoodItems");
 
 const createFoodItem = async (req, res, next) => {
   const { restaurantId } = req.params;
-  const { name, description, price, foodImage } = req.body;
+  const { name, description, price } = req.body;
   try {
     const newFoodItem = new FoodItems({
       name,
       description,
       price,
-      foodImage,
+      foodImage: req.file?.path,
       restaurantId,
     });
     await newFoodItem.save();
@@ -38,6 +38,19 @@ const readFoodItems = async (req, res, next) => {
     res
       .status(200)
       .json({ message: "Found The Food Items", foodItems: foodItems });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const readFoodItemsByRestaurant = async (req, res, next) => {
+  try {
+    const { restaurantId } = req.params;
+    const foodItems = await FoodItems.find({ restaurantId: restaurantId });
+    res.status(200).json({
+      message: "Found the Food Items in that restaurant",
+      foodItems: foodItems,
+    });
   } catch (err) {
     next(err);
   }
@@ -76,4 +89,5 @@ module.exports = {
   readFoodItems,
   updateFoodItem,
   deleteFoodItem,
+  readFoodItemsByRestaurant,
 };

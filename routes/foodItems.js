@@ -6,24 +6,34 @@ const {
   readFoodItems,
   updateFoodItem,
   deleteFoodItem,
+  readFoodItemsByRestaurant,
 } = require("../controllers/foodItems");
-const { verifyRestaurantOwner } = require("../middleware/verify");
+const {
+  verifyRestaurantOwner,
+  verifyParticularRestaurantOwner,
+} = require("../middleware/verify");
 const upload = require("../multerConfig/multer");
 
 router
   .route("/createFoodItem/:restaurantId")
-  .post(verifyRestaurantOwner, upload.single("foodImage"), createFoodItem);
+  .post(
+    verifyParticularRestaurantOwner,
+    upload.single("foodImage"),
+    createFoodItem,
+  );
 
 router.route("/:foodItemId").get(readFoodItem);
+
+router.route("/byRestaurant/:restaurantId").get(readFoodItemsByRestaurant);
 
 router.route("/").get(readFoodItems);
 
 router
   .route("/updateFoodItem/:foodItemId")
-  .patch(verifyRestaurantOwner, updateFoodItem);
+  .patch(verifyParticularRestaurantOwner, updateFoodItem);
 
 router
   .route("/deleteFoodItem/:foodItemId")
-  .delete(verifyRestaurantOwner, deleteFoodItem);
+  .delete(verifyParticularRestaurantOwner, deleteFoodItem);
 
 module.exports = router;

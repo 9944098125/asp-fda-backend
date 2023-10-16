@@ -30,3 +30,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTAzZ
   "logo":"https://i.pinimg.com/736x/c9/94/82/c99482b20dff0923a5441e0daf0c0674.jpg",
   "owner":"65015f5f7b71be0b59158823"
 }
+
+######## GET FOOD ITEMS
+GET http://localhost:5000/api/foodItems
+Content-Type: application/json
+
+###### DELETE FOOD ITEMS
+DELETE http://localhost:5000/api/foodItems/deleteFoodItem/652ab1fd0e9818e3fbe23e7a
