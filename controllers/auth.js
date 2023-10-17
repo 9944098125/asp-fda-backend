@@ -5,7 +5,7 @@ const { sendRegistrationEmail } = require("../helpers/nodemailer");
 
 const register = async (req, res, next) => {
   const { userName, email, password, location, isRestaurantOwner } = req.body;
-  console.log(req.body, req.file);
+  // console.log(req.body, req.file);
   try {
     if (!req.file) {
       return res.status(403).json({ message: "Please, Upload an Image !" });
@@ -39,7 +39,7 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    console.log(email, password);
+    // console.log(email, password);
     const existingUser = await Users.findOne({ email });
     if (!existingUser) {
       return res.status(400).json({ message: "No User with this email..." });

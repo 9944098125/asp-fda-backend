@@ -59,8 +59,8 @@ const verifyParticularRestaurantOwner = (req, res, next) => {
     if (!restaurant) {
       return res.status(403).json({ message: "Restaurant Not Found..." });
     }
-    console.log(restaurant.owner);
-    console.log(decoded);
+    // console.log(restaurant.owner);
+    // console.log(decoded);
     if (restaurant.owner.equals(decoded.userId)) {
       next();
     } else {

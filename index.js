@@ -6,6 +6,7 @@ const cors = require("cors");
 const authRoute = require("./routes/auth");
 const foodItemsRoute = require("./routes/foodItems");
 const restaurantsRoute = require("./routes/restaurants");
+const cartRoute = require("./routes/cart");
 const connectDatabase = require("./dbConnection/db");
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/restaurants", restaurantsRoute);
 app.use("/api/foodItems", foodItemsRoute);
+app.use("/api/cart", cartRoute);
 
 app.use((err, req, res, next) => {
   const errStatus = err.status || 500;

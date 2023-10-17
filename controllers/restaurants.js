@@ -11,7 +11,7 @@ const createRestaurant = async (req, res, next) => {
     const existingRestaurant = await Restaurants.findOne({
       owner: owner,
     });
-    console.log(owner);
+    // console.log(owner);
     if (existingRestaurant) {
       return res.status(404).json({
         message: "You Already own a Restaurant !",
