@@ -57,18 +57,28 @@ const readFoodItemsByRestaurant = async (req, res, next) => {
 };
 
 const updateFoodItem = async (req, res, next) => {
-  const { foodItemId } = req.params;
+  const { foodItemId, restaurantId } = req.params;
   try {
     const updatedFoodItem = await FoodItems.findByIdAndUpdate(
       foodItemId,
-      { $set: req.body },
+      {
+        $set: {
+          name: req.body?.name,
+          price: req.body?.price,
+          description: req.body?.description,
+          restaurantId: restaurantId,
+          foodImage: req.file?.path,
+        },
+      },
       { new: true },
     );
+    updatedFoodItem.save();
     res.status(200).json({
       message: "Updated the Food Item successfully",
       foodItem: updatedFoodItem,
     });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };

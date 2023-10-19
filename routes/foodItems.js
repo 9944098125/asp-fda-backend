@@ -29,11 +29,15 @@ router.route("/byRestaurant/:restaurantId").get(readFoodItemsByRestaurant);
 router.route("/").get(readFoodItems);
 
 router
-  .route("/updateFoodItem/:foodItemId")
-  .patch(verifyParticularRestaurantOwner, updateFoodItem);
+  .route("/updateFoodItem/:foodItemId/:restaurantId")
+  .patch(
+    verifyParticularRestaurantOwner,
+    upload.single("foodImage"),
+    updateFoodItem,
+  );
 
 router
-  .route("/deleteFoodItem/:foodItemId")
+  .route("/deleteFoodItem/:foodItemId/:restaurantId")
   .delete(verifyParticularRestaurantOwner, deleteFoodItem);
 
 module.exports = router;

@@ -77,4 +77,53 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getUsers };
+const getUserById = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await Users.findOne({ _id: userId });
+    res.status(200).json({ message: "User Found !", user: user });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateUser = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    if (!req.file) {
+      return res.status(403).json({ message: "Please upload some image..." });
+    }
+    const updatedUser = Users.findByIdAndUpdate(
+      userId,
+      { $set: { ...req.body, image: req.file?.path } },
+      { new: true },
+    );
+    updatedUser.save();
+    res
+      .status(200)
+      .json({ message: "Updated the user successfully...", user: updatedUser });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteUser = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    await Users.findByIdAndDelete(userId);
+    res.status(200).json({
+      message: "Your Account Got Deleted..., Hope you create a new account.!",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+};

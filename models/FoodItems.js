@@ -18,7 +18,6 @@ const foodItemsSchema = mongoose.Schema(
     restaurantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurants",
-      required: true,
     },
     foodImage: {
       type: String,
