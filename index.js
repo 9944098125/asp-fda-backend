@@ -31,19 +31,19 @@ app.use("/api/foodItems", foodItemsRoute);
 app.use("/api/cart", cartRoute);
 
 app.use((err, req, res, next) => {
-  const errStatus = err.status || 500;
-  const errMessage = err.message || "Something went wrong !";
-  return res.status(errStatus).json({
-    success: false,
-    status: errStatus,
-    message: errMessage,
-    stack: err.stack,
-  });
+	const errStatus = err.status || 500;
+	const errMessage = err.message || "Something went wrong !";
+	return res.status(errStatus).json({
+		success: false,
+		status: errStatus,
+		message: errMessage,
+		stack: err.stack,
+	});
 });
 
 const port = process.env.PORT || 5001;
 
 app.listen(port, () => {
-  connectDatabase();
-  console.log(`App is now running on port [${port}]`);
+	connectDatabase();
+	console.log(`App is now running on port [${port}]`);
 });
