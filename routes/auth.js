@@ -18,7 +18,7 @@ router.route("/").get(getUsers);
 
 router.route("/:userId").get(getUserById);
 
-router.route("/update/:userId").patch(updateUser);
+router.route("/update/:userId").patch(upload.single("image"), updateUser);
 
 router.route("/delete/:userId").delete(deleteUser);
 
