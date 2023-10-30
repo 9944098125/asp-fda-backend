@@ -22,7 +22,7 @@ const register = async (req, res, next) => {
 		const hashedPassword = bcryptJs.hashSync(password, saltRounds);
 		const newUser = new Users({
 			userName,
-			email,
+			email: email.toLowerCase(),
 			password: hashedPassword,
 			location,
 			image: req.file?.path,
@@ -42,7 +42,7 @@ const login = async (req, res, next) => {
 	const { email, password } = req.body;
 	try {
 		// console.log(email, password);
-		const existingUser = await Users.findOne({ email });
+		const existingUser = await Users.findOne({ email: email.toLowerCase() });
 		if (!existingUser) {
 			return res.status(400).json({ message: "No User with this email..." });
 		}
@@ -92,7 +92,7 @@ const getUserById = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
 	const { userId } = req.params;
 	try {
-		console.log(req.body.email);
+		// console.log(req.body.email);
 		const updatedUser = await Users.findByIdAndUpdate(
 			userId,
 			{

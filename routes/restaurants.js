@@ -7,16 +7,15 @@ const {
 	updateRestaurant,
 	deleteRestaurant,
 } = require("../controllers/restaurants");
-const { verifyParticularRestaurantOwner } = require("../middleware/verify");
+const {
+	verifyParticularRestaurantOwner,
+	verifyRestaurantOwner,
+} = require("../middleware/verify");
 const upload = require("../multerConfig/multer");
 
 router
 	.route("/createRestaurant")
-	.post(
-		verifyParticularRestaurantOwner,
-		upload.single("logo"),
-		createRestaurant,
-	);
+	.post(verifyRestaurantOwner, upload.single("logo"), createRestaurant);
 
 router.route("/:restaurantId").get(readRestaurant);
 
