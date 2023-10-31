@@ -1,8 +1,7 @@
 const CartItems = require("../models/CartItems");
 const FoodItem = require("../models/FoodItems");
-const stripe = require("stripe")(
-	"sk_test_51O6UIrSJyDco2qK2rZBftsouvtusZVa9XVsT5yEtmqqsg9LWqydvFv22YjDSrJhGXIJzVtivogG6fHNZe2cRmmCj00JQKX431Q",
-);
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
 
 // Create a new cart for a user
 const createCart = async (req, res, next) => {
@@ -152,6 +151,59 @@ const decrementCartItem = async (req, res) => {
 	}
 };
 
+const payment = (req, res, next) => {
+	try {
+		const instance = new Razorpay({
+			key_id: process.env.KEY_ID,
+			key_secret: process.env.SECRET_RAZOR_KEY,
+		});
+		const options = {
+			amount: req.body.amount * 100,
+			currency: "INR",
+			receipt: crypto.randomBytes(10).toString("hex"),
+		};
+
+		instance.orders.create(options, (err, order) => {
+			if (err) {
+				console.log(err);
+				return res.status(400).json({ message: "Something went wrong..." });
+			}
+			res.status(200).json({ data: order });
+		});
+	} catch (err) {
+		next(err);
+	}
+};
+
+const verifyPayment = (req, res, next) => {
+	try {
+		const { orderId, paymentId, signature } = req.body;
+		const sign = orderId + "|" + paymentId;
+		const expectedSign = crypto
+			.createHmac("sha256", process.env.SECRET_RAZOR_KEY)
+			.update(sign.toString())
+			.digest("hex");
+		if (signature === expectedSign) {
+			res.status(200).json({ message: "Payment verified successfully" });
+		} else {
+			return res.status(400).json({ message: "Invalid Signature" });
+		}
+	} catch (err) {
+		next(err);
+	}
+};
+
+const clearCart = async (req, res, next) => {
+	try {
+		await CartItems.findByIdAndDelete(req.body.cartId);
+		res
+			.status(200)
+			.json({ message: "Order Placed successfully... Thank you..." });
+	} catch (err) {
+		next(err);
+	}
+};
+
 module.exports = {
 	createCart,
 	addToCart,
@@ -159,4 +211,7 @@ module.exports = {
 	removeItemFromCart,
 	incrementCartItem,
 	decrementCartItem,
+	payment,
+	verifyPayment,
+	clearCart,
 };

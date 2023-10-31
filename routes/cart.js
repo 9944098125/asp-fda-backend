@@ -26,4 +26,10 @@ router.patch(
 	cartController.decrementCartItem,
 );
 
+router.route("/payment").post(cartController.payment);
+
+router.route("/verify-payment").post(cartController.verifyPayment);
+
+router.route("/clearCart").delete(cartController.clearCart);
+
 module.exports = router;
