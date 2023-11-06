@@ -23,7 +23,7 @@ const addToCart = async (req, res, next) => {
 		let cart = await CartItems.findOne({ userId });
 
 		if (!cart) {
-			cart = new Cart({ userId, items: [] });
+			cart = new CartItems({ userId, items: [] });
 		}
 
 		const existingItem = cart.items.find((item) =>
@@ -177,13 +177,16 @@ const payment = (req, res, next) => {
 
 const verifyPayment = (req, res, next) => {
 	try {
-		const { orderId, paymentId, signature } = req.body;
-		const sign = orderId + "|" + paymentId;
+		console.log(req.body);
+		console.log(process.env.SECRET_RAZOR_KEY, process.env.KEY_ID);
+		const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+			req.body;
+		const sign = razorpay_order_id + "|" + razorpay_payment_id;
 		const expectedSign = crypto
 			.createHmac("sha256", process.env.SECRET_RAZOR_KEY)
 			.update(sign.toString())
 			.digest("hex");
-		if (signature === expectedSign) {
+		if (razorpay_signature === expectedSign) {
 			res.status(200).json({ message: "Payment verified successfully" });
 		} else {
 			return res.status(400).json({ message: "Invalid Signature" });
@@ -195,7 +198,13 @@ const verifyPayment = (req, res, next) => {
 
 const clearCart = async (req, res, next) => {
 	try {
-		await CartItems.findByIdAndDelete(req.body.cartId);
+		const { cartId } = req.params;
+		const cart = await CartItems.findById(cartId);
+		if (!cart) {
+			return res.status(404).json({ message: "Cart not found" });
+		}
+		cart.items = [];
+		await cart.save();
 		res
 			.status(200)
 			.json({ message: "Order Placed successfully... Thank you..." });
