@@ -177,8 +177,8 @@ const payment = (req, res, next) => {
 
 const verifyPayment = (req, res, next) => {
 	try {
-		console.log(req.body);
-		console.log(process.env.SECRET_RAZOR_KEY, process.env.KEY_ID);
+		// console.log(req.body);
+		// console.log(process.env.SECRET_RAZOR_KEY, process.env.KEY_ID);
 		const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
 			req.body;
 		const sign = razorpay_order_id + "|" + razorpay_payment_id;

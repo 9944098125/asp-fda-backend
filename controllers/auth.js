@@ -6,7 +6,14 @@ const Restaurants = require("../models/Restaurants");
 const FoodItems = require("../models/FoodItems");
 
 const register = async (req, res, next) => {
-	const { userName, email, password, location, isRestaurantOwner } = req.body;
+	const {
+		userName,
+		email,
+		password,
+		location,
+		isRestaurantOwner,
+		deliveryAddress,
+	} = req.body;
 	// console.log(req.body, req.file);
 	try {
 		if (!req.file) {
@@ -27,6 +34,7 @@ const register = async (req, res, next) => {
 			location,
 			image: req.file?.path,
 			isRestaurantOwner,
+			deliveryAddress,
 		});
 		await newUser.save();
 		sendRegistrationEmail(newUser.email);
@@ -101,6 +109,7 @@ const updateUser = async (req, res, next) => {
 					email: req.body.email,
 					location: req.body.location,
 					image: req.file?.path,
+					deliveryAddress: req.body.deliveryAddress,
 				},
 			},
 			{ new: true },
