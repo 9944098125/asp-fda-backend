@@ -18,9 +18,7 @@ router.route("/").get(getUsers);
 
 router.route("/:userId").get(verifyToken, getUserById);
 
-router
-	.route("/update/:userId")
-	.patch(verifyToken, upload.single("image"), updateUser);
+router.route("/update/:userId").patch(verifyToken, updateUser);
 
 router.route("/delete/:userId").delete(verifyToken, deleteUser);
 
