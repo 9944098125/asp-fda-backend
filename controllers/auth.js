@@ -13,12 +13,10 @@ const register = async (req, res, next) => {
 		location,
 		isRestaurantOwner,
 		deliveryAddress,
+		image,
 	} = req.body;
-	// console.log(req.body, req.file);
+	// console.log(req.body);
 	try {
-		if (!req.file) {
-			return res.status(403).json({ message: "Please, Upload an Image !" });
-		}
 		const existingUser = await Users.findOne({ email });
 		if (existingUser) {
 			return res
@@ -32,7 +30,7 @@ const register = async (req, res, next) => {
 			email: email.toLowerCase(),
 			password: hashedPassword,
 			location,
-			image: req.file?.path,
+			image: image,
 			isRestaurantOwner,
 			deliveryAddress,
 		});

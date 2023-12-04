@@ -3,7 +3,7 @@ const Users = require("../models/Users");
 const FoodItems = require("../models/FoodItems");
 
 const createRestaurant = async (req, res, next) => {
-	const { name, address, cuisine, rating, owner } = req.body;
+	const { name, address, cuisine, rating, owner, logo } = req.body;
 	try {
 		if (!(name || address || cuisine || rating || owner)) {
 			return res.status(400).json({ message: "All Fields are required" });
@@ -22,7 +22,7 @@ const createRestaurant = async (req, res, next) => {
 			address,
 			cuisine,
 			rating,
-			logo: req.file.path,
+			logo,
 			owner,
 		});
 		await newRestaurant.save();
@@ -69,7 +69,6 @@ const updateRestaurant = async (req, res, next) => {
 			{
 				$set: {
 					...req.body,
-					logo: req.file?.path,
 				},
 			},
 			{ new: true },

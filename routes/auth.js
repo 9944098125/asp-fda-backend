@@ -8,10 +8,9 @@ const {
 	updateUser,
 	deleteUser,
 } = require("../controllers/auth");
-const upload = require("../multerConfig/multer");
 const { verifyToken } = require("../middleware/verify");
 
-router.route("/registration").post(upload.single("image"), register);
+router.route("/registration").post(register);
 
 router.route("/login").post(login);
 

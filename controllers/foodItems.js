@@ -2,13 +2,13 @@ const FoodItems = require("../models/FoodItems");
 
 const createFoodItem = async (req, res, next) => {
 	const { restaurantId } = req.params;
-	const { name, description, price } = req.body;
+	const { name, description, price, foodImage } = req.body;
 	try {
 		const newFoodItem = new FoodItems({
 			name,
 			description,
 			price,
-			foodImage: req.file?.path,
+			foodImage,
 			restaurantId,
 		});
 		await newFoodItem.save();
@@ -67,7 +67,7 @@ const updateFoodItem = async (req, res, next) => {
 					price: req.body?.price,
 					description: req.body?.description,
 					restaurantId: restaurantId,
-					foodImage: req.file?.path,
+					foodImage: req.body?.foodImage,
 				},
 			},
 			{ new: true },

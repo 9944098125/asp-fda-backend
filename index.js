@@ -14,8 +14,6 @@ const app = express();
 app.use(express.json());
 // parsing the express data to json format
 
-app.use("/uploads", express.static("uploads"));
-// server config for image uploads
 app.use(cors());
 // implementing browser middleware to allow this backend
 // to be integrated with backend

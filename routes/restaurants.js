@@ -11,11 +11,8 @@ const {
 	verifyParticularRestaurantOwner,
 	verifyRestaurantOwner,
 } = require("../middleware/verify");
-const upload = require("../multerConfig/multer");
 
-router
-	.route("/createRestaurant")
-	.post(verifyRestaurantOwner, upload.single("logo"), createRestaurant);
+router.route("/createRestaurant").post(verifyRestaurantOwner, createRestaurant);
 
 router.route("/:restaurantId").get(readRestaurant);
 
@@ -23,11 +20,7 @@ router.route("/").get(getAllRestaurants);
 
 router
 	.route("/updateRestaurant/:restaurantId")
-	.patch(
-		verifyParticularRestaurantOwner,
-		upload.single("logo"),
-		updateRestaurant,
-	);
+	.patch(verifyParticularRestaurantOwner, updateRestaurant);
 
 router
 	.route("/deleteRestaurant/:restaurantId")
