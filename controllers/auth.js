@@ -106,7 +106,7 @@ const updateUser = async (req, res, next) => {
 					userName: req.body.userName,
 					email: req.body.email,
 					location: req.body.location,
-					image: req.file?.path,
+					image: req.body.image,
 					deliveryAddress: req.body.deliveryAddress,
 				},
 			},

@@ -6,7 +6,7 @@ const createRestaurant = async (req, res, next) => {
 	const { name, address, cuisine, rating, owner, logo } = req.body;
 	try {
 		if (!(name || address || cuisine || rating || owner)) {
-			return res.status(400).json({ message: "All Fields are required" });
+			return res.status(400).json({ message: "All Fields are required !!" });
 		}
 		const existingRestaurant = await Restaurants.findOne({
 			owner: owner,
