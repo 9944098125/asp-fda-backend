@@ -17,7 +17,6 @@ const usersSchema = new mongoose.Schema(
 		},
 		location: {
 			type: Object,
-			required: true,
 		},
 		image: {
 			type: String,
