@@ -14,6 +14,7 @@ const register = async (req, res, next) => {
 		isRestaurantOwner,
 		deliveryAddress,
 		image,
+		phone,
 	} = req.body;
 	// console.log(req.body);
 	try {
@@ -33,6 +34,7 @@ const register = async (req, res, next) => {
 			image: image,
 			isRestaurantOwner,
 			deliveryAddress,
+			phone,
 		});
 		await newUser.save();
 		sendRegistrationEmail(newUser.email);
@@ -45,10 +47,16 @@ const register = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-	const { email, password } = req.body;
+	const { emailOrPhone, password } = req.body;
+	// console.log(req.body);
 	try {
-		// console.log(email, password);
-		const existingUser = await Users.findOne({ email: email.toLowerCase() });
+		// check if the req has email or not
+		const isEmail = /^\S+@\S+\.\S+$/.test(emailOrPhone);
+
+		const query = isEmail ? { email: emailOrPhone } : { phone: emailOrPhone };
+		// console.log(OrPhone, password);
+		const existingUser = await Users.findOne(query);
+		console.log(existingUser);
 		if (!existingUser) {
 			return res.status(400).json({ message: "No User with this email..." });
 		}
@@ -56,7 +64,7 @@ const login = async (req, res, next) => {
 		if (!passwordMatches) {
 			return res.status(504).json({ message: "Wrong Password !" });
 		}
-		const userWithoutPassword = await Users.findOne({ email }).select(
+		const userWithoutPassword = await Users.findOne({ emailOrPhone }).select(
 			"-password",
 		);
 		const token = jwt.sign(
