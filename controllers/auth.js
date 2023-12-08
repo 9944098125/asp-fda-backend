@@ -64,9 +64,7 @@ const login = async (req, res, next) => {
 		if (!passwordMatches) {
 			return res.status(504).json({ message: "Wrong Password !" });
 		}
-		const userWithoutPassword = await Users.findOne({ emailOrPhone }).select(
-			"-password",
-		);
+		const userWithoutPassword = await Users.findOne(query).select("-password");
 		const token = jwt.sign(
 			{
 				userId: existingUser._id,
