@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
 			email: email.toLowerCase(),
 			password: hashedPassword,
 			location,
-			image: image,
+			image,
 			isRestaurantOwner,
 			deliveryAddress,
 			phone,
@@ -70,7 +70,7 @@ const login = async (req, res, next) => {
 				userId: existingUser._id,
 				isRestaurantOwner: existingUser.isRestaurantOwner,
 			},
-			process.env.SECRET_TOKEN,
+			process.env.SECRET_TOKEN
 		);
 		res.status(200).json({
 			message: "Login Success",
@@ -111,12 +111,13 @@ const updateUser = async (req, res, next) => {
 				$set: {
 					userName: req.body.userName,
 					email: req.body.email,
+					phone: req.body.phone,
 					location: req.body.location,
 					image: req.body.image,
 					deliveryAddress: req.body.deliveryAddress,
 				},
 			},
-			{ new: true },
+			{ new: true }
 		);
 		await updatedUser.save();
 		res
