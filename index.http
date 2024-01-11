@@ -37,3 +37,12 @@ Content-Type: application/json
 
 ###### DELETE FOOD ITEMS
 DELETE http://localhost:5000/api/foodItems/deleteFoodItem/652ab1fd0e9818e3fbe23e7a
+
+####### LOGIN
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "emailOrPhone":"7995643201",
+  "password":"Srinivas@8"
+}

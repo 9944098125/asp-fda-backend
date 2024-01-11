@@ -58,9 +58,14 @@ const login = async (req, res, next) => {
 		const existingUser = await Users.findOne(query);
 		console.log(existingUser);
 		if (!existingUser) {
-			return res.status(400).json({ message: "No User with this email..." });
+			return res
+				.status(400)
+				.json({ message: "No User with this email or Phone..." });
 		}
-		const passwordMatches = bcryptJs.compare(password, existingUser.password);
+		const passwordMatches = await bcryptJs.compare(
+			password,
+			existingUser.password
+		);
 		if (!passwordMatches) {
 			return res.status(504).json({ message: "Wrong Password !" });
 		}
